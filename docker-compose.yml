@@ -1,0 +1,34 @@
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: odonto-db
+    environment:
+      POSTGRES_USER: odonto
+      POSTGRES_PASSWORD: odonto
+      POSTGRES_DB: odonto
+    ports:
+      - "5432:5432"
+    volumes:
+      - odonto-pgdata:/var/lib/postgresql/data
+
+  backend:
+    build: ./backend
+    container_name: odonto-backend
+    environment:
+      DATABASE_URL: postgres://odonto:odonto@db:5432/odonto
+      PORT: 3000
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+
+  frontend:
+    build: ./frontend
+    container_name: odonto-frontend
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
+
+volumes:
+  odonto-pgdata:
