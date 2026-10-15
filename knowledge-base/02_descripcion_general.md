@@ -1,5 +1,4 @@
 # Descripción General
-
 ## Stack tecnológico
 | Capa | Tecnologías | Versión mínima |
 |------|--------------|----------------|
