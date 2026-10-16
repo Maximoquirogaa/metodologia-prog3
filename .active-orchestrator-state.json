@@ -226,7 +226,8 @@
         "link": "https://skills.sh/wshobson/agents/e2e-testing-patterns"
       }
     ],
-    "installed": [
+    "location": ".agents/skills",
+    "installed_local": [
       "postgres-pro",
       "frontend-design-local",
       "backend-development",
