@@ -6,26 +6,26 @@
 
 | Trigger | Skill | Path |
 |---------|-------|------|
-| Optimizing PostgreSQL queries, replication, EXPLAIN, JSONB, VACUUM, performance monitoring | postgres-pro | C:\Users\Administrador\.config\opencode\skills\postgres-pro\SKILL.md |
-| Building web components, pages, dashboards, React/HTML/CSS UI, styling/beautifying web UI | frontend-design-local | C:\Users\Administrador\.config\opencode\skills\frontend-design-local\SKILL.md |
-| Designing APIs, implementing authentication, optimizing DB queries, CI/CD, security, microservices, production backend | backend-development | C:\Users\Administrador\.agents\skills\backend-development\SKILL.md |
-| Implementing auth systems, securing APIs, OAuth2/social login, RBAC, session management, debugging auth | auth-implementation-patterns | C:\Users\Administrador\.agents\skills\auth-implementation-patterns\SKILL.md |
-| Adding login, sign-up, authentication with Better Auth (new/existing/migrating TS/JS project) | create-auth | C:\Users\Administrador\.agents\skills\create-auth\SKILL.md |
-| Writing, reviewing, refactoring React/Next.js code, data fetching, bundle optimization, performance | vercel-react-best-practices | C:\Users\Administrador\.agents\skills\vercel-react-best-practices\SKILL.md |
-| Refactoring boolean-prop components, building flexible component libraries, compound components, render props, context | vercel-composition-patterns | C:\Users\Administrador\.agents\skills\vercel-composition-patterns\SKILL.md |
-| Automating browser interactions, testing web pages, Playwright tests | playwright-cli | C:\Users\Administrador\.agents\skills\playwright-cli\SKILL.md |
-| Testing local web apps with Playwright, verifying frontend, debugging UI, screenshots, browser logs | webapp-testing | C:\Users\Administrador\.agents\skills\webapp-testing\SKILL.md |
-| Writing JS/TS tests, test infrastructure, TDD/BDD with Jest, Vitest, Testing Library | javascript-testing-patterns | C:\Users\Administrador\.agents\skills\javascript-testing-patterns\SKILL.md |
-| Implementing E2E tests, debugging flaky tests, testing standards with Playwright/Cypress | e2e-testing-patterns | C:\Users\Administrador\.agents\skills\e2e-testing-patterns\SKILL.md |
-| /active-orchestrator:* — starting new project from scratch, SDD/OpenSpec foundation flow | active-orchestrator | C:\Users\Administrador\.config\opencode\skills\active-orchestrator\SKILL.md |
-| Creating/generating/updating AGENTS.md or CLAUDE.md, project rules, agent instructions, after kb-creator + roadmap-generator | agents-md-generator | C:\Users\Administrador\.config\opencode\skills\agent-instruction\SKILL.md |
-| Product/market Discovery before KB: problem, users, competitors, business rules, risks; "investigar mercado", "pensar qué construir" | discovery-research | C:\Users\Administrador\.config\opencode\skills\discovery-research\SKILL.md |
-| "how do I do X", "find a skill for X", "is there a skill", extending capabilities | find-skills | C:\Users\Administrador\.config\opencode\skills\find-skill\SKILL.md |
-| Creating/building/generating knowledge base, documenting project from source docs, "armar base de conocimiento", "crear KB" | kb-creator | C:\Users\Administrador\.config\opencode\skills\kb-creator\SKILL.md |
-| Creating/regenerating CHANGES.md, roadmap, change map, implementation plan, "armar CHANGES/roadmap", "qué changes necesito" | roadmap-generator | C:\Users\Administrador\.config\opencode\skills\roadmap-generator\SKILL.md |
-| Creating new skills, modifying/improving skills, measuring performance, evals, benchmarking, description optimization | skill-creator | C:\Users\Administrador\.config\opencode\skills\skill-creator\SKILL.md |
+| Optimizing PostgreSQL queries, replication, EXPLAIN, JSONB, VACUUM, performance monitoring | postgres-pro | `~/.agents/skills/postgres-pro/SKILL.md` |
+| Building web components, pages, dashboards, React/HTML/CSS UI, styling/beautifying web UI | frontend-design-local | `~/.agents/skills/frontend-design-local/SKILL.md` |
+| Designing APIs, implementing authentication, optimizing DB queries, CI/CD, security, microservices, production backend | backend-development | `~/.agents/skills/backend-development/SKILL.md` |
+| Implementing auth systems, securing APIs, OAuth2/social login, RBAC, session management, debugging auth | auth-implementation-patterns | `~/.agents/skills/auth-implementation-patterns/SKILL.md` |
+| Adding login, sign-up, authentication with Better Auth (new/existing/migrating TS/JS project) | create-auth | `~/.agents/skills/create-auth/SKILL.md` |
+| Writing, reviewing, refactoring React/Next.js code, data fetching, bundle optimization, performance | vercel-react-best-practices | `~/.agents/skills/vercel-react-best-practices/SKILL.md` |
+| Refactoring boolean-prop components, building flexible component libraries, compound components, render props, context | vercel-composition-patterns | `~/.agents/skills/vercel-composition-patterns/SKILL.md` |
+| Automating browser interactions, testing web pages, Playwright tests | playwright-cli | `~/.agents/skills/playwright-cli/SKILL.md` |
+| Testing local web apps with Playwright, verifying frontend, debugging UI, screenshots, browser logs | webapp-testing | `~/.agents/skills/webapp-testing/SKILL.md` |
+| Writing JS/TS tests, test infrastructure, TDD/BDD with Jest, Vitest, Testing Library | javascript-testing-patterns | `~/.agents/skills/javascript-testing-patterns/SKILL.md` |
+| Implementing E2E tests, debugging flaky tests, testing standards with Playwright/Cypress | e2e-testing-patterns | `~/.agents/skills/e2e-testing-patterns/SKILL.md` |
+| /active-orchestrator:* — starting new project from scratch, SDD/OpenSpec foundation flow | active-orchestrator | `~/.agents/skills/active-orchestrator/SKILL.md` |
+| Creating/generating/updating AGENTS.md or CLAUDE.md, project rules, agent instructions, after kb-creator + roadmap-generator | agents-md-generator | `~/.agents/skills/agent-instruction/SKILL.md` |
+| Product/market Discovery before KB: problem, users, competitors, business rules, risks; "investigar mercado", "pensar qué construir" | discovery-research | `~/.agents/skills/discovery-research/SKILL.md` |
+| "how do I do X", "find a skill for X", "is there a skill", extending capabilities | find-skills | `~/.agents/skills/find-skill/SKILL.md` |
+| Creating/building/generating knowledge base, documenting project from source docs, "armar base de conocimiento", "crear KB" | kb-creator | `~/.agents/skills/kb-creator/SKILL.md` |
+| Creating/regenerating CHANGES.md, roadmap, change map, implementation plan, "armar CHANGES/roadmap", "qué changes necesito" | roadmap-generator | `~/.agents/skills/roadmap-generator/SKILL.md` |
+| Creating new skills, modifying/improving skills, measuring performance, evals, benchmarking, description optimization | skill-creator | `~/.agents/skills/skill-creator/SKILL.md` |
 
-> Note: `discovery-research` exists in both `~/.config/opencode/skills/` and `~/.agents/skills/` (identical content) — deduped to the opencode copy above. `skill-registry` itself is excluded per protocol. Project-level skill dirs (`.claude/skills/`, `.agent/skills/`, `skills/`) contain no SKILL.md — none found.
+> Note: User skills live in `~/.agents/skills/` (install with `npx skills add <owner/repo@skill> -g -y`). Project skills (openspec-*) live in `.agents/skills/` within the repo. `skill-registry` itself is excluded per protocol.
 
 ## Compact Rules
 
@@ -185,9 +185,21 @@ Pre-digested rules per skill. Delegators copy matching blocks into sub-agent pro
 
 Read the convention files listed above for project-specific patterns and rules. All referenced paths have been extracted — no need to read index files to discover more.
 
+## Project Skills (repo-local)
+
+| Skill | Path |
+|-------|------|
+| openspec-propose | `.agents/skills/openspec-propose/SKILL.md` |
+| openspec-apply-change | `.agents/skills/openspec-apply-change/SKILL.md` |
+| openspec-archive-change | `.agents/skills/openspec-archive-change/SKILL.md` |
+| openspec-explore | `.agents/skills/openspec-explore/SKILL.md` |
+| openspec-sync-specs | `.agents/skills/openspec-sync-specs/SKILL.md` |
+| openspec-update-change | `.agents/skills/openspec-update-change/SKILL.md` |
+
 ## Project Index (orchestrator context)
 
 - **KB**: `knowledge-base/` (10 canonicals + README) — stack Node + Postgres, domain salud/odontología, turnos/agenda
 - **Roadmap**: `CHANGES.md` (C-01…C-08)
-- **State**: `.active-orchestrator-state.json` (`skills.installed` = 11 project skills; `registry.file` = `.atl/skill-registry.md`)
-- **Installed project skills (11)**: postgres-pro, frontend-design-local, backend-development, auth-implementation-patterns, create-auth, vercel-react-best-practices, vercel-composition-patterns, playwright-cli, webapp-testing, javascript-testing-patterns, e2e-testing-patterns
+- **State**: `.active-orchestrator-state.json` (`skills.installed` = 11 user skills; `registry.file` = `.atl/skill-registry.md`)
+- **Installed user skills (11)**: postgres-pro, frontend-design-local, backend-development, auth-implementation-patterns, create-auth, vercel-react-best-practices, vercel-composition-patterns, playwright-cli, webapp-testing, javascript-testing-patterns, e2e-testing-patterns
+- **Project skills (6)**: openspec-propose, openspec-apply-change, openspec-archive-change, openspec-explore, openspec-sync-specs, openspec-update-change — en `.agents/skills/`
