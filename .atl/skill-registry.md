@@ -17,6 +17,7 @@
 | 9 | `webapp-testing` | Pruebas de aplicaciones web locales con Playwright, verificación de frontend, depuración de UI, capturas de pantalla, logs del navegador. | `.agents/skills/webapp-testing/details.md` |
 | 10 | `javascript-testing-patterns` | Pruebas JS/TS con Jest/Vitest/Testing Library, TDD/BDD, mocking, fixtures, tests de integración y unitarios, pirámide 70-20-10. | `.agents/skills/javascript-testing-patterns/advanced-testing-patterns.md` |
 | 11 | `e2e-testing-patterns` | Pruebas E2E con Playwright/Cypress, depuración de tests flaky, Page Object Model, playwright.config.ts por navegador. | `.agents/skills/e2e-testing-patterns/details.md` |
+| 12 | `change-verification-gate` | Gate de verificación por change: corre lint, tests, build, docker + smoke HTTP y specs; devuelve VERDE/AMARILLO/ROJO sin modificar código. Antes de archivar o ante fallas dudosas. | `.agents/skills/change-verification-gate/SKILL.md` |
 
 > Nota: `discovery-research` existe tanto en `~/.config/opencode/skills/` como en `~/.agents/skills/` (contenido idéntico) — se mantiene la copia de opencode. `skill-registry` queda excluido del escaneo por protocolo.
 
@@ -100,6 +101,15 @@ Reglas pre-digeridas por skill. Los delegadores copian los bloques correspondien
 - Implementa pruebas E2E con Playwright/Cypress; depura pruebas flaky
 - Patrón Page Object Model para pruebas mantenibles
 - Configura `playwright.config.ts` con proyectos por navegador, reintentos y reportes
+
+### change-verification-gate
+- Corre `node .agents/skills/change-verification-gate/scripts/verify.mjs --change <name> --mode fast|full`; no arregla nada, solo reporta
+- `fast`: preflight Node ≥20 + node_modules, backend lint/test, frontend lint/build, `openspec validate --all`
+- `full`: agrega `docker compose up -d --build`, `GET /api/health` y `localhost:5173`; `--cleanup` baja contenedores sin `-v`
+- Resuelve el change por `--change` → `openspec list --json` → último archivado; con varios activos, pregunta
+- Veredicto: ROJO si hay FAIL; AMARILLO si hay SKIP o tasks pendientes; VERDE solo si todo pasó y tasks completas
+- Falla de test: primero `git diff HEAD --stat` / `git ls-tree` / `git log` para saber si es pre-existente; aislar con `git worktree add`; `git stash` es último recurso y nunca con untracked
+- Prohibido: modificar código/tests/specs, commitear, usar datos reales de pacientes, exponer `.env`, `docker compose down -v`
 
 ## Project Conventions
 

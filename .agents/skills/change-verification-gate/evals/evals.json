@@ -1,0 +1,23 @@
+{
+  "skill_name": "change-verification-gate",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Terminé las tasks de c-01-foundation-setup. Antes de archivarlo quiero saber si realmente funciona: corré las verificaciones y decime si está listo o qué falta.",
+      "expected_output": "Ejecuta el gate en modo full, reporta tabla de etapas con OK/FAIL/SKIP, cuenta de tasks y un veredicto explícito (VERDE/AMARILLO/ROJO) con próximo paso. No modifica archivos.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "Corré los tests del backend nada más, rápido, sin levantar docker que me come la RAM.",
+      "expected_output": "Corre modo fast (preflight + backend lint/test + frontend lint/build + specs si aplica), sin intentar docker ni smoke HTTP, y reporta en formato de tabla con veredicto.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "Me falla el test del backend después de tocar los modelos. ¿Es por lo que cambié o ya estaba roto antes? No me arregles nada todavía, solo decime.",
+      "expected_output": "Corre la suite, y si falla intenta distinguir pre-existente vs introducido (git stash + rerun de la suite), restaura el stash, y reporta sin modificar código ni aplicar fixes.",
+      "files": []
+    }
+  ]
+}
