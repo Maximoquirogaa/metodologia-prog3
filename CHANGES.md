@@ -106,7 +106,7 @@ Paso │ Agente A (Backend Core/Auth) │ Agente B (Backend Turnos)      │ Age
 ---
 
 ### [C-02] `core-models-multitenant`
-- **Estado**: `[ ]` pendiente
+- **Estado**: `[x]` archivado (2026-10-30-c-02-core-models-multitenant)
 - **Scope**: Modelos base multi-tenant + constraint anti-overlap + seed demo (US-001…US-004 dependen de estas tablas)
   - Modelos: `Tenant` (id uuid PK, nombre, slug único), `Odontologo` (tenant_id FK, nombre, especialidad, activo), `Paciente` (tenant_id, nombre, teléfono requerido, user_id nullable v1), `Turno` (tenant_id, odontologo_id, paciente_id, inicio/fin timestamptz, estado reservado/cancelado/atendido, token_cancelación)
   - Migración 001: las 4 tablas + FKs + índice `(tenant_id, odontologo_id, inicio)` + índice slug único en tenants

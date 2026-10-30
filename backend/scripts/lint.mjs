@@ -9,7 +9,7 @@ import { readdirSync, statSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
 import { join } from 'node:path';
 
-const ROOTS = ['src', 'test'];
+const ROOTS = ['src', 'test', 'app', 'scripts'];
 
 function collect(dir, acc) {
   for (const entry of readdirSync(dir)) {

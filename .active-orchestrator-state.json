@@ -288,20 +288,13 @@
   "verification": {
     "created_by": "change-verification-gate",
     "last_run": {
-      "date": "2026-10-29",
-      "change": "c-01-foundation-setup",
+      "date": "2026-10-30",
+      "change": "c-02-core-models-multitenant",
       "fast": {
         "verdict": "VERDE",
         "steps": 7,
         "failures": 0,
         "skips": 0
-      },
-      "full": {
-        "verdict": "AMARILLO",
-        "steps": 10,
-        "failures": 0,
-        "skips": 3,
-        "skips_reason": "daemon de Docker no disponible"
       }
     },
     "known_fixes": [
@@ -312,9 +305,10 @@
   },
   "changes_state": {
     "archived": [
-      "c-01-foundation-setup"
+      "c-01-foundation-setup",
+      "c-02-core-models-multitenant"
     ],
     "active": [],
-    "next": "c-02-core-models-multitenant"
+    "next": "c-03-auth-internos-rbac"
   }
 }
