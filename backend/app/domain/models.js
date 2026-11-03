@@ -32,6 +32,31 @@ export const PacienteSchema = z.object({
   updated_at: z.date().optional(),
 });
 
+export const UserRolEnum = z.enum(['secretaria', 'odontologo']);
+
+export const UserSchema = z.object({
+  id: z.string().uuid().optional(),
+  tenant_id: z.string().uuid('El tenant_id debe ser un UUID válido (RN-MT-01)'),
+  email: z.string().trim().email('El email del usuario no es válido'),
+  password_hash: z.string().min(20, 'El password_hash debe ser un hash bcrypt válido'),
+  rol: UserRolEnum,
+  created_at: z.date().optional(),
+});
+
+/**
+ * El email es único dentro de cada tenant, no globalmente: la base refuerza
+ * esto con UNIQUE(tenant_id, email). Este helper replica la regla a nivel de
+ * dominio para validaciones previas a la persistencia.
+ */
+export function isEmailUniqueInTenant(existingUsers, { tenant_id, email }) {
+  const normalizedEmail = String(email).trim().toLowerCase();
+  return !existingUsers.some(
+    user =>
+      user.tenant_id === tenant_id &&
+      String(user.email).trim().toLowerCase() === normalizedEmail
+  );
+}
+
 export const TurnoEstadoEnum = z.enum(['reservado', 'cancelado', 'atendido']);
 
 export const TurnoSchema = z

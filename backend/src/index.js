@@ -1,11 +1,13 @@
 import express from 'express';
+import { createAuthRouter } from '../app/http/auth-routes.js';
 
-export function createApp() {
+export function createApp({ userRepository, tenantRepository } = {}) {
   const app = express();
   app.use(express.json());
   app.get('/api/health', (req, res) => {
     res.status(200).json({ status: 'ok' });
   });
+  app.use('/api/auth', createAuthRouter({ userRepository, tenantRepository }));
   return app;
 }
 

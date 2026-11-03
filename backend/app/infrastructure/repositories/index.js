@@ -36,6 +36,42 @@ export class TenantRepository {
   }
 }
 
+export class UserRepository {
+  constructor(db = getPool()) {
+    this.db = db;
+  }
+
+  async create({ tenant_id, email, password_hash, rol }) {
+    const text = `
+      INSERT INTO users (tenant_id, email, password_hash, rol)
+      VALUES ($1, $2, $3, $4)
+      RETURNING id, tenant_id, email, rol, created_at;
+    `;
+    const res = await this.db.query(text, [tenant_id, email, password_hash, rol]);
+    return res.rows[0];
+  }
+
+  async findByEmailAndTenant(tenant_id, email) {
+    const text = `
+      SELECT id, tenant_id, email, password_hash, rol, created_at
+      FROM users
+      WHERE tenant_id = $1 AND email = $2;
+    `;
+    const res = await this.db.query(text, [tenant_id, email]);
+    return res.rows[0] || null;
+  }
+
+  async findById(tenant_id, id) {
+    const text = `
+      SELECT id, tenant_id, email, rol, created_at
+      FROM users
+      WHERE tenant_id = $1 AND id = $2;
+    `;
+    const res = await this.db.query(text, [tenant_id, id]);
+    return res.rows[0] || null;
+  }
+}
+
 export class OdontologoRepository {
   constructor(db = getPool()) {
     this.db = db;
