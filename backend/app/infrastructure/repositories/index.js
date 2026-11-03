@@ -144,6 +144,23 @@ export class PacienteRepository {
     const res = await this.db.query(text, [tenant_id, id]);
     return res.rows[0] || null;
   }
+
+  /**
+   * Busca el paciente por teléfono dentro del tenant. La reserva pública
+   * reutiliza el registro existente en vez de duplicarlo (match por teléfono,
+   * nunca global: un teléfono puede repetirse en otro tenant).
+   */
+  async findByTelefono(tenant_id, telefono) {
+    const text = `
+      SELECT id, tenant_id, nombre, telefono, user_id, created_at, updated_at
+      FROM pacientes
+      WHERE tenant_id = $1 AND telefono = $2
+      ORDER BY created_at ASC
+      LIMIT 1;
+    `;
+    const res = await this.db.query(text, [tenant_id, telefono]);
+    return res.rows[0] || null;
+  }
 }
 
 export class TurnoRepository {
@@ -211,6 +228,26 @@ export class TurnoRepository {
     `;
     const res = await this.db.query(text, [tenant_id, id]);
     return res.rows[0] || null;
+  }
+
+  /**
+   * Turnos activos del odontólogo que se superponen con el rango [desde, hasta).
+   * Un turno cancelado no ocupa el slot, por eso queda fuera de la consulta:
+   * la disponibilidad pública no debe leer sus datos.
+   */
+  async findActivosByOdontologoAndDay(tenant_id, odontologo_id, desde, hasta) {
+    const text = `
+      SELECT id, tenant_id, odontologo_id, paciente_id, inicio, fin, estado
+      FROM turnos
+      WHERE tenant_id = $1
+        AND odontologo_id = $2
+        AND estado IN ('reservado', 'atendido')
+        AND inicio < $4
+        AND fin > $3
+      ORDER BY inicio ASC;
+    `;
+    const res = await this.db.query(text, [tenant_id, odontologo_id, desde, hasta]);
+    return res.rows;
   }
 
   async cancel(tenant_id, id) {

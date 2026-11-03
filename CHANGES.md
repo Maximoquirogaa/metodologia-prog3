@@ -130,7 +130,7 @@ Paso │ Agente A (Backend Core/Auth) │ Agente B (Backend Turnos)      │ Age
 > C-03 puede ir en paralelo con C-04 porque la reserva pública v1 no exige login (DD-02).
 
 ### [C-03] `auth-internos-rbac`
-- **Estado**: `[ ]` pendiente
+- **Estado**: `[x]` archivado (2026-11-03-c-03)
 - **Scope**: Login solo para internos (secretaria/odontólogo); paciente sin auth en v1
   - Modelo `User`: id, tenant_id FK, email único por tenant, password_hash (bcrypt/argon2), rol (`secretaria`|`odontologo`)
   - Migración 002: tabla `users` + índice `(tenant_id, email)`
@@ -157,7 +157,7 @@ Paso │ Agente A (Backend Core/Auth) │ Agente B (Backend Turnos)      │ Age
 > C-04 y C-05/C-06: C-04 es prerrequisito de C-06. C-05 solo necesita C-02+C-03, por lo que va en paralelo con C-06.
 
 ### [C-04] `disponibilidad-reserva`
-- **Estado**: `[ ]` pendiente
+- **Estado**: `[x]` archivado (2026-11-03-c-04)
 - **Scope**: Disponibilidad + creación de turnos sin login (US-001, US-002; métrica 0 superpuestos)
   - `GET /api/disponibilidad?odontologoId&fecha` — genera slots dentro del horario del odontólogo (Lun–Vie 9–18 seed, RN-TU-04), excluye ocupados; filtra por odontólogo y fecha
   - `POST /api/turnos` — body `{odontologoId, inicio, fin, paciente:{nombre, telefono}}`; crea paciente si no existe (match por teléfono+tenant) y turno en estado `reservado`; devuelve `token_cancelación`

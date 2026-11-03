@@ -1,3 +1,5 @@
+import { isIP } from 'node:net';
+
 export function resolveTenantIdentifier(req) {
   const headers = req.headers || {};
   const tenantId = headers['x-tenant-id'];
@@ -11,7 +13,10 @@ export function resolveTenantIdentifier(req) {
     return { slug: String(tenantSlug).trim().toLowerCase() };
   }
 
-  if (req.hostname && typeof req.hostname === 'string') {
+  // Solo se interpreta subdominio cuando el host es un nombre de dominio.
+  // Un IP literal (127.0.0.1, ::1) no tiene subdominio de tenant: sin este
+  // chequeo la reserva pública respondía 404 al servirse por IP.
+  if (req.hostname && typeof req.hostname === 'string' && isIP(req.hostname) === 0) {
     const parts = req.hostname.split('.');
     if (parts.length > 2 && parts[0] !== 'www' && parts[0] !== 'localhost') {
       return { slug: parts[0].toLowerCase() };
