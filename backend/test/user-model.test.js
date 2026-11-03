@@ -60,6 +60,32 @@ describe('User domain model', () => {
     assert.ok(res.error.issues.some(issue => issue.path.includes('email')));
   });
 
+  test('acepta odontologo_id UUID o null y rechaza uno mal formado', () => {
+    const base = {
+      tenant_id: tenantA,
+      email: 'odontologo@demo.test',
+      password_hash: '$2b$12$abcdefghijklmnopqrstuv',
+      rol: 'odontologo',
+    };
+
+    const conVinculo = UserSchema.safeParse({
+      ...base,
+      odontologo_id: 'e0eebc99-9c0b-4ef8-bb6d-6bb9bd380a55',
+    });
+    assert.ok(conVinculo.success);
+    assert.equal(conVinculo.data.odontologo_id, 'e0eebc99-9c0b-4ef8-bb6d-6bb9bd380a55');
+
+    const sinVinculo = UserSchema.safeParse({ ...base, odontologo_id: null });
+    assert.ok(sinVinculo.success);
+    assert.equal(sinVinculo.data.odontologo_id, null);
+
+    const sinCampo = UserSchema.safeParse(base);
+    assert.ok(sinCampo.success, 'odontologo_id es opcional');
+
+    const malFormado = UserSchema.safeParse({ ...base, odontologo_id: 'no-es-uuid' });
+    assert.ok(!malFormado.success);
+  });
+
   test('el email es único dentro del mismo tenant pero puede repetirse en otro tenant', () => {
     const existing = [
       { tenant_id: tenantA, email: 'secretaria@demo.test' },

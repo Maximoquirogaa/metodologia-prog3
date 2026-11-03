@@ -40,6 +40,7 @@ export const UserSchema = z.object({
   email: z.string().trim().email('El email del usuario no es válido'),
   password_hash: z.string().min(20, 'El password_hash debe ser un hash bcrypt válido'),
   rol: UserRolEnum,
+  odontologo_id: z.string().uuid('El odontologo_id debe ser un UUID válido').nullable().optional(),
   created_at: z.date().optional(),
 });
 

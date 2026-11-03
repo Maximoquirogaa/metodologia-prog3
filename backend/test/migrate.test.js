@@ -38,7 +38,13 @@ describe('Database Migrations Runner', () => {
       async query(text, params) {
         executedQueries.push({ text, params });
         if (text.includes('SELECT name FROM schema_migrations')) {
-          return { rows: [{ name: '001_core_models.sql' }, { name: '002_users.sql' }] };
+          return {
+            rows: [
+              { name: '001_core_models.sql' },
+              { name: '002_users.sql' },
+              { name: '003_users_odontologo.sql' },
+            ],
+          };
         }
         return { rows: [] };
       },

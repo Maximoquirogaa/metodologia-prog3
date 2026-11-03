@@ -41,19 +41,19 @@ export class UserRepository {
     this.db = db;
   }
 
-  async create({ tenant_id, email, password_hash, rol }) {
+  async create({ tenant_id, email, password_hash, rol, odontologo_id = null }) {
     const text = `
-      INSERT INTO users (tenant_id, email, password_hash, rol)
-      VALUES ($1, $2, $3, $4)
-      RETURNING id, tenant_id, email, rol, created_at;
+      INSERT INTO users (tenant_id, email, password_hash, rol, odontologo_id)
+      VALUES ($1, $2, $3, $4, $5)
+      RETURNING id, tenant_id, email, rol, odontologo_id, created_at;
     `;
-    const res = await this.db.query(text, [tenant_id, email, password_hash, rol]);
+    const res = await this.db.query(text, [tenant_id, email, password_hash, rol, odontologo_id]);
     return res.rows[0];
   }
 
   async findByEmailAndTenant(tenant_id, email) {
     const text = `
-      SELECT id, tenant_id, email, password_hash, rol, created_at
+      SELECT id, tenant_id, email, password_hash, rol, odontologo_id, created_at
       FROM users
       WHERE tenant_id = $1 AND email = $2;
     `;
@@ -63,11 +63,27 @@ export class UserRepository {
 
   async findById(tenant_id, id) {
     const text = `
-      SELECT id, tenant_id, email, rol, created_at
+      SELECT id, tenant_id, email, rol, odontologo_id, created_at
       FROM users
       WHERE tenant_id = $1 AND id = $2;
     `;
     const res = await this.db.query(text, [tenant_id, id]);
+    return res.rows[0] || null;
+  }
+
+  /**
+   * Setea (o corrige) el vínculo con un odontólogo. Scoped por tenant: nunca
+   * permite mover un usuario de consultorio. Lo usa el seed para dejar el
+   * usuario demo consistente en corridas repetidas.
+   */
+  async linkOdontologo(tenant_id, id, odontologo_id) {
+    const text = `
+      UPDATE users
+      SET odontologo_id = $3
+      WHERE tenant_id = $1 AND id = $2
+      RETURNING id, tenant_id, email, rol, odontologo_id, created_at;
+    `;
+    const res = await this.db.query(text, [tenant_id, id, odontologo_id]);
     return res.rows[0] || null;
   }
 }
