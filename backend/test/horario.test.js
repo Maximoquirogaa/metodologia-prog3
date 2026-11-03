@@ -7,6 +7,7 @@ import {
   estaDentroDeHorario,
   slotEnPasado,
   formatIsoBuenosAires,
+  rangoDelDia,
 } from '../app/domain/horario.js';
 
 const ar = (iso) => new Date(`${iso}-03:00`);
@@ -75,5 +76,36 @@ describe('Horario de atención y grilla de slots (RN-TU-04)', () => {
     assert.equal(slotEnPasado(ar('2026-11-09T10:00:00'), ahora), true);
     assert.equal(slotEnPasado(ar('2026-11-09T10:15:00'), ahora), true);
     assert.equal(slotEnPasado(ar('2026-11-09T10:30:00'), ahora), false);
+  });
+});
+
+describe('rangoDelDia(fecha) (C-05)', () => {
+  const ar = (iso) => new Date(`${iso}-03:00`);
+
+  test('devuelve desde = 00:00 y hasta = 24:00 de Buenos Aires para una fecha válida', () => {
+    const rango = rangoDelDia('2026-11-09');
+
+    assert.equal(rango.desde.toISOString(), ar('2026-11-09T00:00:00').toISOString());
+    assert.equal(rango.hasta.toISOString(), ar('2026-11-10T00:00:00').toISOString());
+  });
+
+  test('un turno a las 23:59 cae dentro del rango del día', () => {
+    const rango = rangoDelDia('2026-11-09');
+    const turno = ar('2026-11-09T23:59:00');
+
+    assert.ok(turno >= rango.desde && turno < rango.hasta);
+  });
+
+  test('un turno a las 00:00 del día siguiente queda fuera del rango', () => {
+    const rango = rangoDelDia('2026-11-09');
+    const turnoSiguienteDia = ar('2026-11-10T00:00:00');
+
+    assert.ok(!(turnoSiguienteDia >= rango.desde && turnoSiguienteDia < rango.hasta));
+  });
+
+  test('rechaza fecha inválida devolviendo null', () => {
+    assert.equal(rangoDelDia('2026-02-30'), null);
+    assert.equal(rangoDelDia('no-es-fecha'), null);
+    assert.equal(rangoDelDia(undefined), null);
   });
 });

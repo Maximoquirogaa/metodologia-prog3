@@ -132,6 +132,24 @@ export function slotEnPasado(inicio, ahora = new Date()) {
 }
 
 /**
+ * Devuelve el rango { desde, hasta } de un día completo en Buenos Aires
+ * (00:00 a 24:00, excluido el cierre). Reutiliza parseFecha e
+ * instanteBuenosAires para mantener el offset fijo -03:00.
+ *
+ * @param {string} fecha - Fecha en formato YYYY-MM-DD
+ * @returns {{ desde: Date, hasta: Date } | null} null si la fecha es inválida
+ */
+export function rangoDelDia(fecha) {
+  const partes = parseFecha(fecha);
+  if (!partes) return null;
+
+  const desde = instanteBuenosAires(partes.y, partes.m, partes.d, 0);
+  const hasta = instanteBuenosAires(partes.y, partes.m, partes.d + 1, 0);
+
+  return { desde, hasta };
+}
+
+/**
  * Serializa un instante en ISO 8601 con el offset de Buenos Aires,
  * por ejemplo `2026-11-09T09:00:00-03:00`. No se usa toISOString() porque
  * expondría UTC (`12:00:00Z`) y la reserva se lee en hora local.
