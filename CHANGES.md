@@ -234,7 +234,7 @@ Paso │ Agente A (Backend Core/Auth) │ Agente B (Backend Turnos)      │ Age
 ---
 
 ### [C-08] `frontend-agenda-privada`
-- **Estado**: `[ ]` pendiente
+- **Estado**: `[x]` archivado (2026-11-03-c-08-frontend-agenda-privada)
 - **Scope**: Web privada con login: agenda del día por odontólogo para secretaria/odontólogo
   - `GET /login` — email+password → guarda access token en memoria + refresh en cookie; redirige a `/agenda`
   - `GET /agenda` — selector fecha + filtro odontólogo (secretaria ve todos, odontólogo ve la propia por defecto); lista por hora con paciente; acciones cancelar (consume `DELETE /api/turnos/:id`)
