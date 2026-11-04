@@ -247,6 +247,35 @@ export class TurnoRepository {
   }
 
   /**
+   * Turnos de un día completo con paciente y odontólogo expandidos.
+   * Scoped por tenant en la tabla base y en ambos JOIN. Incluye todos los
+   * estados (la agenda muestra también los cancelados) y no selecciona
+   * `token_cancelacion`: es un secreto de cancelación que la agenda no necesita.
+   */
+  async findByDay(tenant_id, { desde, hasta, odontologo_id } = {}) {
+    let text = `
+      SELECT t.id, t.inicio, t.fin, t.estado,
+             p.id AS paciente_id, p.nombre AS paciente_nombre, p.telefono AS paciente_telefono,
+             o.id AS odontologo_id, o.nombre AS odontologo_nombre
+      FROM turnos t
+      JOIN pacientes p ON p.id = t.paciente_id AND p.tenant_id = t.tenant_id
+      JOIN odontologos o ON o.id = t.odontologo_id AND o.tenant_id = t.tenant_id
+      WHERE t.tenant_id = $1 AND t.inicio >= $2 AND t.inicio < $3
+    `;
+    const params = [tenant_id, desde, hasta];
+
+    if (odontologo_id) {
+      params.push(odontologo_id);
+      text += ` AND t.odontologo_id = $${params.length}`;
+    }
+
+    text += ' ORDER BY t.inicio ASC;';
+
+    const res = await this.db.query(text, params);
+    return res.rows;
+  }
+
+  /**
    * Turnos activos del odontólogo que se superponen con el rango [desde, hasta).
    * Un turno cancelado no ocupa el slot, por eso queda fuera de la consulta:
    * la disponibilidad pública no debe leer sus datos.

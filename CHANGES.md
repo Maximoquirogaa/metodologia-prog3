@@ -176,7 +176,7 @@ Paso │ Agente A (Backend Core/Auth) │ Agente B (Backend Turnos)      │ Age
 ---
 
 ### [C-05] `agenda-diaria`
-- **Estado**: `[ ]` pendiente
+- **Estado**: `[x]` archivado (2026-11-03-c-05-agenda-diaria)
 - **Scope**: Agenda del día para internos autenticados (US-003)
   - `GET /api/agenda?fecha&odontologoId` — requiere auth + rol `secretaria` u `odontologo`; lista turnos del día ordenados por hora con paciente expandido; filtro opcional por odontólogo (si es odontólogo, por defecto solo la propia)
   - Respuesta incluye: hora inicio/fin, paciente (nombre, teléfono), estado, odontólogo

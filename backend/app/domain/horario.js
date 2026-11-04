@@ -132,6 +132,21 @@ export function slotEnPasado(inicio, ahora = new Date()) {
 }
 
 /**
+ * Rango [00:00, 24:00) del día calendario de Buenos Aires para una fecha
+ * `YYYY-MM-DD`. Devuelve null si la fecha no existe. Se usa para acotar la
+ * agenda diaria sin depender del timezone de la sesión de Postgres.
+ */
+export function rangoDelDia(fecha) {
+  const partes = parseFecha(fecha);
+  if (!partes) return null;
+
+  const desde = instanteBuenosAires(partes.y, partes.m, partes.d, 0);
+  // Argentina no aplica DST: sumar 24 h equivale al día siguiente a las 00:00.
+  const hasta = new Date(desde.getTime() + 24 * 60 * MS_POR_MINUTO);
+  return { desde, hasta };
+}
+
+/**
  * Serializa un instante en ISO 8601 con el offset de Buenos Aires,
  * por ejemplo `2026-11-09T09:00:00-03:00`. No se usa toISOString() porque
  * expondría UTC (`12:00:00Z`) y la reserva se lee en hora local.

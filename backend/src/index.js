@@ -1,6 +1,7 @@
 import express from 'express';
 import { createAuthRouter } from '../app/http/auth-routes.js';
 import { createReservaRouter } from '../app/http/reserva-routes.js';
+import { createAgendaRouter } from '../app/http/agenda-routes.js';
 
 export function createApp({
   userRepository,
@@ -16,6 +17,10 @@ export function createApp({
     res.status(200).json({ status: 'ok' });
   });
   app.use('/api/auth', createAuthRouter({ userRepository, tenantRepository }));
+  app.use(
+    '/api',
+    createAgendaRouter({ userRepository, odontologoRepository, turnoRepository })
+  );
   app.use(
     '/api',
     createReservaRouter({
