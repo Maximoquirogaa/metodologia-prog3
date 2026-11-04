@@ -27,6 +27,21 @@ export function resolveTenantIdentifier(req) {
   return { slug: defaultSlug };
 }
 
+/**
+ * Resuelve el tenant_id real a partir de la petición (cabeceras, subdominio o
+ * TENANT_DEFAULT) usando el `TenantRepository`. Devuelve null si no existe.
+ * Es el punto único que comparten la reserva y la cancelación públicas.
+ */
+export async function resolverTenantId(req, tenantRepository) {
+  const ident = req.tenant || resolveTenantIdentifier(req);
+  if (ident.id) {
+    const tenant = await tenantRepository.findById(ident.id);
+    return tenant ? tenant.id : null;
+  }
+  const tenant = await tenantRepository.findBySlug(ident.slug);
+  return tenant ? tenant.id : null;
+}
+
 export function tenantMiddleware(options = {}) {
   const resolver = options.resolver || resolveTenantIdentifier;
 

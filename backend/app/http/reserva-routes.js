@@ -7,7 +7,7 @@ import {
   PacienteRepository,
   TurnoRepository,
 } from '../infrastructure/repositories/index.js';
-import { tenantMiddleware, resolveTenantIdentifier } from '../infrastructure/tenant.js';
+import { tenantMiddleware, resolverTenantId } from '../infrastructure/tenant.js';
 
 const FECHA_REGEX = /^\d{4}-\d{2}-\d{2}$/;
 const FECHA_HORA_REGEX = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(:\d{2})?(\.\d+)?(Z|[+-]\d{2}:\d{2})?$/;
@@ -55,16 +55,6 @@ function responderError(res, error, next) {
     return res.status(error.status).json({ code: error.code, error: error.message });
   }
   return next(error);
-}
-
-async function resolverTenantId(req, tenantRepository) {
-  const ident = req.tenant || resolveTenantIdentifier(req);
-  if (ident.id) {
-    const tenant = await tenantRepository.findById(ident.id);
-    return tenant ? tenant.id : null;
-  }
-  const tenant = await tenantRepository.findBySlug(ident.slug);
-  return tenant ? tenant.id : null;
 }
 
 export function createReservaRouter({

@@ -193,7 +193,7 @@ Paso │ Agente A (Backend Core/Auth) │ Agente B (Backend Turnos)      │ Age
 ---
 
 ### [C-06] `cancelacion-turnos`
-- **Estado**: `[ ]` pendiente
+- **Estado**: `[x]` archivado (2026-11-03-c-06-cancelacion-turnos)
 - **Scope**: Cancelación con antelación configurable por link sin login + por internos (US-004, RN-TU-02)
   - `DELETE /api/turnos/:id` — requiere auth (secretaria/odontólogo) o token; valida antelación `CANCEL_MIN_HOURS` (default 24, SU-01 a confirmar) → si `inicio - now < CANCEL_MIN_HOURS` responde `422 {code:"RN-TU-02"}`; si pasa, estado → `cancelado` y libera el slot
   - `GET /cancelar/:token` (info del turno para confirmar) + `POST /api/turnos/cancelar/:token` — cancelación pública por `token_cancelación` sin login (misma validación RN-TU-02)

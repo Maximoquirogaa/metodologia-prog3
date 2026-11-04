@@ -59,6 +59,29 @@ describe('TurnoRepository.findByDay (agenda diaria)', () => {
     assert.doesNotMatch(db.capturado.text, /estado\s*(=|IN)\s*/i);
   });
 
+  test('devuelve las filas planas con alias (el servicio arma paciente/odontólogo)', async () => {
+    const db = mockDb([
+      {
+        id: 't-1',
+        inicio: new Date('2026-11-09T12:00:00Z'),
+        fin: new Date('2026-11-09T12:30:00Z'),
+        estado: 'reservado',
+        paciente_id: 'p-1',
+        paciente_nombre: 'Ana Demo',
+        paciente_telefono: '+5491144440001',
+        odontologo_id: ODONTOLOGO,
+        odontologo_nombre: 'Dr. Demo',
+      },
+    ]);
+    const repo = new TurnoRepository(db);
+
+    const [turno] = await repo.findByDay(TENANT, { desde: DESDE, hasta: HASTA });
+
+    assert.equal(turno.paciente_nombre, 'Ana Demo');
+    assert.equal(turno.odontologo_nombre, 'Dr. Demo');
+    assert.equal(turno.paciente, undefined, 'no debe anidar en el repositorio');
+  });
+
   test('agrega el filtro opcional por odontólogo como $4', async () => {
     const db = mockDb([]);
     const repo = new TurnoRepository(db);

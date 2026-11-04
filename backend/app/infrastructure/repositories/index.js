@@ -306,56 +306,39 @@ export class TurnoRepository {
     return res.rows[0] || null;
   }
 
-  async cancelByToken(token_cancelacion) {
-    const text = `
-      UPDATE turnos
-      SET estado = 'cancelado', updated_at = NOW()
-      WHERE token_cancelacion = $1 AND estado != 'cancelado'
-      RETURNING id, tenant_id, odontologo_id, paciente_id, inicio, fin, estado, token_cancelacion, created_at, updated_at;
-    `;
-    const res = await this.db.query(text, [token_cancelacion]);
-    return res.rows[0] || null;
-  }
-
   /**
-   * Turnos del día con paciente y odontólogo expandidos, scoped por tenant.
-   * Columnas explícitas (sin SELECT *, sin token_cancelacion).
-   * Doble condición tenant_id en los JOINs para aislamiento a nivel SQL.
+   * Turno por token de cancelación, scopeado por tenant. El token es el único
+   * secreto del flujo público: buscar dentro del tenant evita filtrar la
+   * existencia de turnos de otro consultorio (responde lo mismo que un token
+   * inexistente). No selecciona `token_cancelacion` en la respuesta.
    */
-  async findByDay(tenant_id, { desde, hasta, odontologo_id }) {
-    let text = `
+  async findByToken(tenant_id, token_cancelacion) {
+    const text = `
       SELECT t.id, t.inicio, t.fin, t.estado,
-             p.id AS paciente_id, p.nombre AS paciente_nombre, p.telefono AS paciente_telefono,
+             p.id AS paciente_id, p.nombre AS paciente_nombre,
              o.id AS odontologo_id, o.nombre AS odontologo_nombre
       FROM turnos t
       JOIN pacientes p ON p.id = t.paciente_id AND p.tenant_id = t.tenant_id
       JOIN odontologos o ON o.id = t.odontologo_id AND o.tenant_id = t.tenant_id
-      WHERE t.tenant_id = $1 AND t.inicio >= $2 AND t.inicio < $3
+      WHERE t.tenant_id = $1 AND t.token_cancelacion = $2;
     `;
-    const params = [tenant_id, desde, hasta];
+    const res = await this.db.query(text, [tenant_id, token_cancelacion]);
+    return res.rows[0] || null;
+  }
 
-    if (odontologo_id) {
-      params.push(odontologo_id);
-      text += ` AND t.odontologo_id = $${params.length}`;
-    }
-
-    text += ' ORDER BY t.inicio ASC;';
-
-    const res = await this.db.query(text, params);
-    return res.rows.map((row) => ({
-      id: row.id,
-      inicio: row.inicio,
-      fin: row.fin,
-      estado: row.estado,
-      paciente: {
-        id: row.paciente_id,
-        nombre: row.paciente_nombre,
-        telefono: row.paciente_telefono,
-      },
-      odontologo: {
-        id: row.odontologo_id,
-        nombre: row.odontologo_nombre,
-      },
-    }));
+  /**
+   * Cancela por token dentro del tenant. La guarda `estado != 'cancelado'`
+   * evita dobles actualizaciones concurrentes; el servicio resuelve la
+   * idempotencia leyendo el turno antes.
+   */
+  async cancelByToken(tenant_id, token_cancelacion) {
+    const text = `
+      UPDATE turnos
+      SET estado = 'cancelado', updated_at = NOW()
+      WHERE tenant_id = $1 AND token_cancelacion = $2 AND estado != 'cancelado'
+      RETURNING id, tenant_id, odontologo_id, paciente_id, inicio, fin, estado, created_at, updated_at;
+    `;
+    const res = await this.db.query(text, [tenant_id, token_cancelacion]);
+    return res.rows[0] || null;
   }
 }
