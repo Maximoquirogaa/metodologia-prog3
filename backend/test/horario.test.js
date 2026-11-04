@@ -98,5 +98,6 @@ describe('Horario de atención y grilla de slots (RN-TU-04)', () => {
   test('rangoDelDia devuelve null con fecha inválida', () => {
     assert.equal(rangoDelDia('2026-02-30'), null);
     assert.equal(rangoDelDia('no-es-fecha'), null);
+    assert.equal(rangoDelDia(undefined), null);
   });
 });
